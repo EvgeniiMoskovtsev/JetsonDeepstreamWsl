@@ -1,0 +1,1 @@
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/bin/deepstream-test1-app

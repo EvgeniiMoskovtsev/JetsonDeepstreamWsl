@@ -1,0 +1,7 @@
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/install/strip.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/install/local.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/install.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/list_install_components.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/edit_cache.dir
+/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/cmake-build-debug-wsl/CMakeFiles/deepstream-test1-app.dir
