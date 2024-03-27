@@ -263,7 +263,21 @@ main (int argc, char *argv[])
     #endif
   }
 
-  if (!source || !h264parser || !decoder || !post_decoder_converter || !pgie
+	/* Создаем элемент трекера */
+	GstElement *tracker = gst_element_factory_make("nvtracker", "tracker");
+	if (!tracker) {
+		g_printerr("Failed to create tracker element. Exiting.\n");
+		return -1;
+	}
+/* Настройка свойств трекера */
+	g_object_set(G_OBJECT(tracker), "tracker-width", 1280, NULL);
+	g_object_set(G_OBJECT(tracker), "tracker-height", 720, NULL);
+	g_object_set(G_OBJECT(tracker), "gpu-id", 0, NULL);
+	g_object_set(G_OBJECT(tracker), "ll-lib-file", "/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/bin/libByteTracker.so", NULL);
+	g_object_set(G_OBJECT(tracker), "enable-batch-process", 1, NULL);
+
+
+	if (!source || !h264parser || !decoder || !post_decoder_converter || !pgie || !tracker
       || !nvvidconv || !nvosd || !post_osd_converter || !sink) {
     g_printerr ("One element could not be created. Exiting.\n");
     return -1;
@@ -299,12 +313,35 @@ main (int argc, char *argv[])
   bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline));
   bus_watch_id = gst_bus_add_watch (bus, bus_call, loop);
   gst_object_unref (bus);
+//
+//	/* Создаем элемент videorate */
+//  GstElement *videorate = gst_element_factory_make("videorate", "videorate");
+//
+//	/* Устанавливаем желаемую частоту кадров */
+//  g_object_set(G_OBJECT(videorate), "max-rate", 4, NULL);
 
-  /* Set up the pipeline */
+
+	/* Set up the pipeline */
   /* we add all elements into the pipeline */
+	GstElement *videoconvert, *encoder, *muxer, *filesink;
+
+// Создаем элементы для кодирования и записи в файл
+	videoconvert = gst_element_factory_make("videoconvert", "convert-for-file");
+	encoder = gst_element_factory_make("x264enc", "encoder");
+	muxer = gst_element_factory_make("mp4mux", "muxer");
+	filesink = gst_element_factory_make("filesink", "filesink");
+
+// Настройка filesink
+	g_object_set(G_OBJECT(filesink), "location", "output.mp4", NULL);
+
+// Связываем элементы
+	if (!gst_element_link_many(post_osd_converter, videoconvert, encoder, muxer, filesink, NULL)) {
+		g_printerr("Elements could not be linked for file output.\n");
+		return -1;
+	}
   gst_bin_add_many (GST_BIN (pipeline),
-      source, h264parser, decoder, post_decoder_converter, streammux, pgie,
-      nvvidconv, nvosd, post_osd_converter, sink, NULL);
+      source, h264parser, decoder, post_decoder_converter, streammux, pgie, tracker,
+      nvvidconv, nvosd, post_osd_converter, videoconvert, encoder, muxer, filesink, NULL);
   g_print ("Added elements to bin\n");
 
   GstPad *sinkpad, *srcpad;
@@ -340,8 +377,8 @@ main (int argc, char *argv[])
     return -1;
   }
 
-  if (!gst_element_link_many (streammux, pgie,
-        nvvidconv, nvosd, post_osd_converter, sink, NULL)) {
+  if (!gst_element_link_many (streammux, pgie, tracker,
+        nvvidconv, nvosd, post_osd_converter, videoconvert, encoder, muxer, filesink, NULL)) {
       g_printerr ("Elements could not be linked: 2. Exiting.\n");
       return -1;
   }
