@@ -284,7 +284,7 @@ main (int argc, char *argv[])
     /* Set all the necessary properties of the nvinfer element,
      * the necessary ones are : */
     g_object_set (G_OBJECT (pgie),
-        "config-file-path", "dstest1_pgie_config.txt", NULL);
+        "config-file-path", "config_infer_primary_yoloV8.txt", NULL);
   }
 
   if (yaml_config) {
