@@ -52,6 +52,7 @@
 
 /* PATHS TO LIBS */
 #define LIB_TRACK_PATH "../libs/libByteTracker.so"
+#define OUTPUT_VIDEO_PATH "../data/output.mp4"
 
 gint frame_number = 0;
 gchar pgie_classes_str[4][32] = { "Vehicle", "TwoWheeler", "Person",
@@ -335,7 +336,7 @@ main (int argc, char *argv[])
 	filesink = gst_element_factory_make("filesink", "filesink");
 
 // Настройка filesink
-	g_object_set(G_OBJECT(filesink), "location", "../data/output.mp4", NULL);
+	g_object_set(G_OBJECT(filesink), "location", OUTPUT_VIDEO_PATH, NULL);
 
 // Связываем элементы
 	if (!gst_element_link_many(post_osd_converter, videoconvert, encoder, muxer, filesink, NULL)) {
