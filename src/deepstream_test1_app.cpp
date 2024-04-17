@@ -50,6 +50,9 @@
     return -1; \
   }
 
+/* PATHS TO LIBS */
+#define LIB_TRACK_PATH "../libs/libByteTracker.so"
+
 gint frame_number = 0;
 gchar pgie_classes_str[4][32] = { "Vehicle", "TwoWheeler", "Person",
   "Roadsign"
@@ -273,7 +276,7 @@ main (int argc, char *argv[])
 	g_object_set(G_OBJECT(tracker), "tracker-width", 1280, NULL);
 	g_object_set(G_OBJECT(tracker), "tracker-height", 720, NULL);
 	g_object_set(G_OBJECT(tracker), "gpu-id", 0, NULL);
-	g_object_set(G_OBJECT(tracker), "ll-lib-file", "/mnt/c/Users/user/CLionProjects/JetsonDeepstreamWsl/bin/libByteTracker.so", NULL);
+	g_object_set(G_OBJECT(tracker), "ll-lib-file", LIB_TRACK_PATH, NULL);
 	g_object_set(G_OBJECT(tracker), "enable-batch-process", 1, NULL);
 
 
@@ -298,7 +301,7 @@ main (int argc, char *argv[])
     /* Set all the necessary properties of the nvinfer element,
      * the necessary ones are : */
     g_object_set (G_OBJECT (pgie),
-        "config-file-path", "config_infer_primary_yoloV8.txt", NULL);
+        "config-file-path", "../configs/config_infer_primary_yoloV8.txt", NULL);
   }
 
   if (yaml_config) {
@@ -332,7 +335,7 @@ main (int argc, char *argv[])
 	filesink = gst_element_factory_make("filesink", "filesink");
 
 // Настройка filesink
-	g_object_set(G_OBJECT(filesink), "location", "output.mp4", NULL);
+	g_object_set(G_OBJECT(filesink), "location", "../data/output.mp4", NULL);
 
 // Связываем элементы
 	if (!gst_element_link_many(post_osd_converter, videoconvert, encoder, muxer, filesink, NULL)) {

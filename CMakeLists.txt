@@ -8,7 +8,9 @@ if(NOT DEFINED CUDA_VER)
 endif()
 
 # Определяем настройки для WSL2, 0 - без, 1 - с
-set(ENABLE_WSL2 1 CACHE BOOL "Enable WSL2 specific flags")
+if (ENABLE_WSL2)
+    add_definitions(-DENABLE_WSL2)
+endif()
 
 # Версия DeepStream
 set(NVDS_VERSION 6.2)
