@@ -1,2 +1,5 @@
 *cmake-**
 *.mp4
+*.idea*
+bin/*
+deepstream_python_apps*
